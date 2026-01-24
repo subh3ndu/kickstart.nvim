@@ -507,6 +507,22 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sn', function()
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
       end, { desc = '[S]earch [N]eovim files' })
+
+      -- For cpp files
+      vim.keymap.set('n', '<F5>', function()
+        if vim.bo.filetype ~= 'cpp' then
+          print 'Not a C++ file'
+          return
+        end
+
+        local file = vim.fn.expand '%'
+        local output = vim.fn.expand '%:r'
+        local exe = './' .. output
+
+        vim.cmd 'w'
+        vim.cmd 'botright split | resize 12'
+        vim.cmd('terminal g++ ' .. file .. ' -std=c++17 -Wall -O2 -o ' .. output .. ' && ' .. exe .. ' < input.txt > output.txt')
+      end)
     end,
   },
 
