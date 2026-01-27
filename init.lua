@@ -100,6 +100,8 @@ vim.g.have_nerd_font = false
 
 -- Make line numbers default
 vim.o.number = true
+vim.o.relativenumber = true
+vim.o.autoread = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
 -- vim.o.relativenumber = true
@@ -150,8 +152,8 @@ vim.opt.swapfile = false
 vim.opt.clipboard = 'unnamedplus'
 
 --  Tabs
-vim.opt.tabstop = 4 -- how wide a <Tab> looks
-vim.opt.shiftwidth = 4 -- how many spaces for auto-indent
+vim.opt.tabstop = 4      -- how wide a <Tab> looks
+vim.opt.shiftwidth = 4   -- how many spaces for auto-indent
 vim.opt.expandtab = true -- use spaces instead of real tabs
 vim.opt.smartindent = true
 
@@ -346,7 +348,7 @@ require('lazy').setup({
   -- Then, because we use the `opts` key (recommended), the configuration runs
   -- after the plugin has been loaded as `require(MODULE).setup(opts)`.
 
-  { -- Useful plugin to show you pending keybinds.
+  {                     -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     opts = {
@@ -427,7 +429,7 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+      { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -521,7 +523,8 @@ require('lazy').setup({
 
         vim.cmd 'w'
         vim.cmd 'botright split | resize 12'
-        vim.cmd('terminal g++ ' .. file .. ' -std=c++17 -Wall -O2 -o ' .. output .. ' && ' .. exe .. ' < input.txt > output.txt')
+        vim.cmd('terminal g++ ' ..
+          file .. ' -std=c++17 -Wall -O2 -o ' .. output .. ' && ' .. exe .. ' < input.txt > output.txt')
       end)
     end,
   },
@@ -551,7 +554,7 @@ require('lazy').setup({
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
-      { 'j-hui/fidget.nvim', opts = {} },
+      { 'j-hui/fidget.nvim',    opts = {} },
 
       -- Allows extra capabilities provided by blink.cmp
       'saghen/blink.cmp',
@@ -778,9 +781,7 @@ require('lazy').setup({
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, {
-        'stylua', -- Used to format Lua code
-      })
+      -- vim.list_extend(ensure_installed, { 'stylua' }) -- Used to format Lua code
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
